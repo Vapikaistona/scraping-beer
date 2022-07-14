@@ -1,13 +1,12 @@
 const keyboards = require('./products/keyboards');
-const pages = require('./pages');
+const breweries = require('./catalog/breweries/scraping-birrapedia');
 const utils = require('./utils');
-const mongodb = require('./utils/database/mongodb');
+const mongodb = require('./database/mongodb');
 const kafka = require('./utils/kafka/kafka');
-const dbCollections = require('./utils/database/collections');
+const dbCollections = require('./database/collections');
 (async () => {
-    await mongodb.init();
-    const pagesInfo = pages.getAllPages();
-    await dbCollections.insertPages(pagesInfo);
+    const breweryInfo = breweries.getBreweryInfo(1);
+    console.table(breweryInfo);
     // const mechanicalkeyboards_keyboards = await keyboards.mechanicalkeyboardsKeyboards(3);
     // const keyboardsCollection = await mongodb.getCollection('keyboards');
     // await keyboardsCollection.insertMany([...mechanicalkeyboards_keyboards]);

@@ -1,4 +1,4 @@
-import { Collection, Db, MongoClient } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import { mongoConfig } from './config';
 
 export module mongo {

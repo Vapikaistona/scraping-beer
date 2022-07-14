@@ -1,24 +1,19 @@
 // import { pages } from './utils/PagesInfo';
-import { mongo } from './utils/database/mongodb';
-import { Collection } from 'mongodb';
-import { Pages } from './utils/database/collections/pages';
-import { Keyboards } from './utils/database/collections/keyboards';
-(async () => {
-    // await mongo.init();
-    // const pageCollection: Collection = await mongo.getCollection('pages');
-    const database = await mongo.init();
-    const pages = new Pages(database);
-    const keyboards = new Keyboards(database);
+import {getBreweryInfo} from './catalog/breweries/scraping-birrapedia'; 
 
-    const cursor = await keyboards.get({});
-    if ((await cursor.count()) === 0) {
-        console.log("No documents found!");
-      }
-      // replace console.dir with your callback to access individual elements
-      await cursor.forEach(item => console.log(item));
-    // pages.write();
+(async () => {
+    const page = await getBreweryInfo.startBrowser();
+    for (let index = 2; index < 225; index++) {
+        await getBreweryInfo.getBreweries(index, page);
+        
+    }
+    //await getBreweryInfo.getAllBreweryDetails('https://birrapedia.com/laugar-brewery/e-52f1f0cbd187e42463000010',page);
+    //await getBreweryInfo.getBreweries(3, page);
+    await getBreweryInfo.endBrowser();
+    console.info('finished!!!')
     function handle(signal) {
         console.log(`Received ${signal}`);
+        process.exit();
     }
 
     process.on('SIGINT', handle);
