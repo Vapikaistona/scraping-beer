@@ -13,11 +13,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const scraping_birrapedia_1 = require("./catalog/breweries/scraping-birrapedia");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const page = yield scraping_birrapedia_1.getBreweryInfo.startBrowser();
-    for (let index = 2; index < 225; index++) {
-        yield scraping_birrapedia_1.getBreweryInfo.getBreweries(index, page);
-    }
+    // for (let index = 2; index < 225; index++) {
+    //     await getBreweryInfo.getBreweries(index, page);
+    // }
     //await getBreweryInfo.getAllBreweryDetails('https://birrapedia.com/laugar-brewery/e-52f1f0cbd187e42463000010',page);
-    //await getBreweryInfo.getBreweries(3, page);
+    yield scraping_birrapedia_1.getBreweryInfo.getBreweries(3, page);
     yield scraping_birrapedia_1.getBreweryInfo.endBrowser();
     console.info('finished!!!');
     function handle(signal) {

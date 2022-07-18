@@ -6,11 +6,11 @@ import { Db, MongoDBNamespace, ObjectId } from 'mongodb';
 
 
 
-export module getBreweryInfo {
+export module getBeersInfo {
     let browser;
     let db; 
     export async function getBreweries(currentPage: number = 1, page: puppeteer.Page) {
-        const url = `https://birrapedia.com/breweries/ie-7061776f`;
+        const url = `https://birrapedia.com/beer/${currentPage}/b-7365636572`;
         await page.goto(url, { waitUntil: 'domcontentloaded' });
          const allBreweries = await page.evaluate( ()=> {
             return [...document.querySelectorAll(`.detalle-bloque-cuerpo > a`)].map((el: any) => el.href);
@@ -70,9 +70,7 @@ export module getBreweryInfo {
             try {
                 await beerCollection.insert(beerItem);
             } catch (error) {
-                console.error('Can not insert'+ beerItem.name);
-                const existingBeer = await beerCollection.getOne({ name: beerItem.name });
-                await beerCollection.fullUpdate(existingBeer._id, beerItem);
+                console.error(error);
             }
         }
         return completeDetails;
@@ -95,7 +93,7 @@ async function getAllBeerDetails (beer: string, page: puppeteer.Page) {
                 images = images.filter((element: any) => !element.includes('untappd'));
                 const style = detalles.querySelector('.mt-0 > .mr-1 a').textContent;
                 const breweryName = detalles.querySelector('.mt-1').textContent;
-                const rating = [...imagenes.querySelectorAll('.cabecera-bloque-row')].map((element: any) => parseFloat(element.querySelector('strong').textContent.split(' ')[0].replace('.','').replace(',','.')));
+                const rating = [...imagenes.querySelectorAll('.cabecera-bloque-row')].map((element: any) => parseFloat(element.querySelector('strong').textContent.split(' ')[0].replace(',','.')));
                 const ratingScore = (rating.length > 1 && rating[0]) || 0;
                 const ratingNumber = (rating.length > 1 && rating[1]) || (rating[0] || 0);
                 let alchol = -1;
